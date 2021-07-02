@@ -9,6 +9,7 @@
 <%
    Email e = new Email("jcnv21@gmail.com","luisrm5142@gmail.com", "localhost");
    e.test();
+   e.enviar();
    System.out.println("Probrando");
 %>
 

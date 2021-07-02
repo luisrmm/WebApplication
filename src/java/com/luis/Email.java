@@ -3,6 +3,7 @@ package com.luis;
 import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
+import javax.activation.*;
 import org.apache.log4j.Logger;
 
 
@@ -18,25 +19,28 @@ public class Email {
        host = host_;
    }
 public void test(){
-     Logger log = Logger.getLogger("Logger de Ejemplo");
-         log.trace("un melnsaje");
-         log.debug("un meknsaje");
-         log.info("un mensuuaje");
+ 
+         System.out.println(to);
+         System.out.println(from);
+         System.out.println(host);
 }
     //Métodos de la clase
     public void enviar()
     {
+      
         //Email e = new Email("jcnv21@gmail.com","luisrm5142@gmail.com", "localhost")
         // Get system properties
       Properties properties = System.getProperties();
-
+     System.out.println(properties);
       // Setup mail server
       properties.setProperty("mail.smtp.host", host);
-
+      properties.setProperty("mail.smtp.port", "8090");
+  System.out.println(properties);
       // Get the default Session object.
       Session session = Session.getDefaultInstance(properties);
 
       try {
+        
          // Create a default MimeMessage object.
          MimeMessage message = new MimeMessage(session);
 
@@ -54,17 +58,8 @@ public void test(){
 
          // Send message
          Transport.send(message);
-         Logger log = Logger.getLogger("Logger de Ejemplo");
-         log.trace("un melnsaje");
-         log.debug("un meknsaje");
-         log.info("un mensuuaje");
-         log.warn("un men99saje");
-         log.error("un men00saje");
-         log.fatal("un mensaje");
-         
       } catch (MessagingException mex) {
-         mex.printStackTrace();
+          mex.printStackTrace();
       }
-    }
-    
+    }  
 }
