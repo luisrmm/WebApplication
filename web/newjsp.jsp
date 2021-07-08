@@ -77,33 +77,43 @@
 
         <h3>ORDEN DE COMPRA</h3>
 
+
+        <form action="action.jsp"> 
+            <select name="productId"> 
+                <option value="1">MyExamCloud</option> 
+                <option value="2">ExamBoat</option> 
+                <option value="3">Test Generator Lab</option> 
+            </select> 
+            <input type="submit" value="Submit"> 
+        </form> 
+
+        // action.jsp 
+        <%
+            String productSelected = request.getParameter("productId");
+        %>
+
         <div class="container">
             <form action="list" method="get">
                 <label for="cant">Cantidad</label>
                 <input type="text" id="cant" placeholder="Ingrese una cantidad..">
 
-                <% String id = (String)request.getAttribute("id");
-                if (id == null){
-                    id = "33";
-                }
+                <%  List<Producto> arrayProducto = (List<Producto>) request.getAttribute("arrayProducto");
+                    int l = 0;
+                    if (arrayProducto == null) {
+                        arrayProducto = new ArrayList<>();
+                    } else {
+                        l = arrayProducto.size();
+                    }
                 %>
-                
-                 <%  List<Producto> arrayProducto = (List<Producto>)request.getAttribute("arrayProducto");
-                 int l = 0;
-                if (arrayProducto == null){
-                    arrayProducto = new ArrayList<>();
-                }else{
-                    l= arrayProducto.size();
-                }
-                %>
-                
-                <h2><%=l%><h2/>
-                <div class="marginTable" data-pubid="<%=id%>" data-count="5"></div>
-                Select a Category:&nbsp;
-                <select name="producto">
-                    <c:forEach items="${arrayProducto}" var="producto">
-                        <option value="${producto.getProductoID()}">${producto.getNombre()}</option>
-                    </c:forEach>
+
+                <label for="prop">Productos</label>
+                </select>
+                <select name="prop">
+                    <% for (int i = 0; i < arrayProducto.size(); i += 1) {%>
+                    <option value="<%=arrayProducto.get(i).getProductoID()%>">
+                        <%=arrayProducto.get(i).getNombre()%>  $<%=arrayProducto.get(i).getPrecioUnitario()%>
+                    </option>
+                    <% }%>
                 </select>
                 <br/><br/>
                 <input type="submit" value="Submit" />
