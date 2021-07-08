@@ -12,7 +12,8 @@
    DB cone = new DB();
    e.enviar();
    g.getInbox();
-   cone.getProductos();
+   cone.setConn();
+   List<Producto> arrayProducto = cone.getProductos();
 %>
 
 <!DOCTYPE html>
@@ -73,11 +74,11 @@ input[type=submit]:hover {
     <label for="cant">Cantidad</label>
     <input type="text" id="cant" placeholder="Ingrese una cantidad..">
 
-    <label for="country">Productos</label>
-    <select id="country" name="country">
-      <option value="australia">Tomate - $3</option>
-      <option value="canada">Chile - $1</option>
-      <option value="usa">Cas - $5</option>
+    <label for="producto">Productos</label>
+    <select name="producto">
+        <c:forEach items="${arrayProducto}" var="producto">
+            <option value="${producto.ProductoID}">${producto.Nombre}</option>
+        </c:forEach>
     </select>
     <input type="submit" id="add" value="Agregar">
     
