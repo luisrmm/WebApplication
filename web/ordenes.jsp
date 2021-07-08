@@ -4,15 +4,15 @@
     Author     : luisr
 --%>
 
-<%@page import="com.luis.Email" contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="com.luis.Email" import="com.luis.JavaMailPop3Reader" import="com.luis.DB" contentType="text/html" pageEncoding="UTF-8"%>
 
 <%
-   Email e = new Email("smtp.gmail.com","465","pruebaluisrm@gmail.com","Kreatormeta123","luisrm5142@gmail.com","Test","Hello, this is a test, I'm Luis");
-   e.test();
+   Email e = new Email("smtp.gmail.com","587","pruebaluisrm@gmail.com","Kreatormetal123","o.cempresa12@gmail.com","Orden Compra","Orden de compra xml adjunta");
+   JavaMailPop3Reader g = new  JavaMailPop3Reader();
+   DB cone = new DB();
    e.enviar();
-   System.out.println("Probrando");
-   
-//  int courseid = Integer.parseInt(request.getParameter("select"));
+   g.getInbox();
+   cone.getProductos();
 %>
 
 <!DOCTYPE html>
@@ -34,6 +34,11 @@ input[type=text], select, textarea {
   resize: vertical;
 }
 
+input.add{
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
+
 input[type=submit] {
   background-color: #04AA6D;
   color: white;
@@ -52,38 +57,38 @@ input[type=submit]:hover {
   background-color: #f2f2f2;
   padding: 20px;
 }
+
+.orden {
+  padding-top: 20px;
+}
+
 </style>
 </head>
 <body>
 
-<h3>Contact Form</h3>
+<h3>ORDEN DE COMPRA</h3>
 
 <div class="container">
   <form action="/action_page.php">
-    <label for="fname">First Name</label>
-    <input type="text" id="fname" name="firstname" placeholder="Your name..">
+    <label for="cant">Cantidad</label>
+    <input type="text" id="cant" placeholder="Ingrese una cantidad..">
 
-    <label for="lname">Last Name</label>
-    <input type="text" id="lname" name="lastname" placeholder="Your last name..">
-
-    <label for="country">Country</label>
+    <label for="country">Productos</label>
     <select id="country" name="country">
       <option value="australia">Tomate - $3</option>
-      <option value="canada">Canada</option>
-      <option value="usa">USA</option>
+      <option value="canada">Chile - $1</option>
+      <option value="usa">Cas - $5</option>
     </select>
-    <!--giving name attribute to access it in servlet-->
-<!--    <select name="select">
-        <c:forEach var="tempstudent" items="${select}">
-            passing id 
-            <option value="${tempstudent.id}">${tempstudent.id},
-            <td>${tempstudent.name} - $${tempstudent.price}</td>
-            </option>
-        </c:forEach>
-    </select>-->
-
-    <label for="subject">Subject</label>
-    <textarea id="subject" name="subject" placeholder="Write something.." style="height:200px"></textarea>
+    <input type="submit" id="add" value="Agregar">
+    
+    <div class="orden" >      
+      <label for="orden">Su Orden</label>
+      <textarea id="orden" disabled placeholder="5 Kilos - Tomates -$3 -> $15" style="height:200px"></textarea>
+	</div>
+    
+    
+    <label for="ltotal">Total</label>
+    <input type="text" id="ltotal" disabled placeholder="Total..">
 
     <input type="submit" value="Submit">
   </form>
@@ -91,4 +96,3 @@ input[type=submit]:hover {
 
 </body>
 </html>
-

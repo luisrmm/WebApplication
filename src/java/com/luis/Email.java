@@ -39,47 +39,32 @@ public class Email {
        subject = subject_;        
        message = message_;
    }
-public void test(){
- 
-         System.out.println(toAddress);
-         System.out.println(userName);
-         System.out.println(host);
-         System.out.println(port);
-         System.out.println(password);
-         System.out.println(subject);
-         System.out.println(message);
-}
+   
     //Métodos de la clase
     public void enviar()
     {
               try {
             Properties props = new Properties();
-            props.setProperty("mail.smtp.host", "smtp.gmail.com");
+            props.setProperty("mail.smtp.host", host);
             props.setProperty("mail.smtp.starttls.enable", "true");
-            props.setProperty("mail.smtp.port", "587");
+            props.setProperty("mail.smtp.port", port);
             props.setProperty("mail.smtp.auth", "true");
             
             Session session = Session.getDefaultInstance(props);
             
-            String correoRemitente = "pruebaluisrm@gmail.com";
-            String passwordRemitente = "Kreatormetal123";
-            String correoReceptor = "luisrm5142@gmail.com";
-            String asunto = "Prueba Correo";
-            String mensaje = "Esto es una prueba desde Web desde java";
-            
             // creates a new e-mail message
             Message msg = new MimeMessage(session);
             
-            msg.setFrom(new InternetAddress(correoRemitente));
-            msg.addRecipient(Message.RecipientType.TO, new InternetAddress (correoReceptor));
-            msg.setSubject(asunto);
+            msg.setFrom(new InternetAddress(userName));
+            msg.addRecipient(Message.RecipientType.TO, new InternetAddress (toAddress));
+            msg.setSubject(subject);
             // set plain text message
-            msg.setText(mensaje);
+            msg.setText(message);
             
 // *** BEGIN CHANGE
 // sends the e-mail
             Transport t = session.getTransport("smtp");
-            t.connect(correoRemitente, passwordRemitente);
+            t.connect(userName, password);
             t.sendMessage(msg, msg.getRecipients(Message.RecipientType.TO));
             t.close();
 // *** END CHANGE

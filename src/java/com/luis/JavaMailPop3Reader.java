@@ -6,47 +6,79 @@
 package com.luis;
 
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.mail.*;
 import javax.mail.internet.*;
 
 public class JavaMailPop3Reader {
+    
+//    
+//   String host;    
+//   String userName;
+//   String password;
+//    
+//   public JavaMailPop3Reader(String host_, final String userName_, final String password_){
+//       
+//       host = host_;
+//       userName =  userName_;
+//       password = password_;
+//   }
 
-  public static void main(String args[]) throws Exception {
+  public void getInbox() 
+  {
+      
 
-    // mail server connection parameters
-    String host = "pop.mail.gmail.com";
-    String user = "luisrm5142@gmail.com";
-    String password = "Slayermetal123";
+         try {
 
-    // connect to my pop3 inbox
-    Properties properties = System.getProperties();
-    Session session = Session.getDefaultInstance(properties);
-    Store store = session.getStore("pop3");
-    store.connect(host, user, password);
-    Folder inbox = store.getFolder("Inbox");
-    inbox.open(Folder.READ_ONLY);
+         String host = "pop.gmail.com";
+         String port = "995";
+         String user = "o.cempresa12@gmail.com";
+         String password = "empresa123";
+         
+             
+             
+      //create properties field
+      Properties properties = new Properties();
 
-    // get the list of inbox messages
-    Message[] messages = inbox.getMessages();
+      properties.put("mail.pop.host", host);
+      properties.put("mail.pop.port", "995");
+      properties.put("mail.pop.starttls.enable", "true");
+      Session emailSession = Session.getDefaultInstance(properties);
+  
+      //create the POP3 store object and connect with the pop server
+      Store store = emailSession.getStore("pop3s");
 
-    if (messages.length == 0) System.out.println("No messages found.");
+      store.connect(host, user, password);
 
-    for (int i = 0; i < messages.length; i++) {
-      // stop after listing ten messages
-      if (i > 10) {
-        System.exit(0);
-        inbox.close(true);
-        store.close();
+      //create the folder object and open it
+      Folder emailFolder = store.getFolder("INBOX");
+      emailFolder.open(Folder.READ_ONLY);
+
+      // retrieve the messages from the folder in an array and print it
+      Message[] messages = emailFolder.getMessages();
+      System.out.println("messages.length---" + messages.length);
+
+      for (int i = 0, n = messages.length; i < n; i++) {
+         Message message = messages[i];
+         System.out.println("---------------------------------");
+         System.out.println("Email Number " + (i + 1));
+         System.out.println("Subject: " + message.getSubject());
+         System.out.println("From: " + message.getFrom()[0]);
+         System.out.println("Text: " + message.getContent().toString());
+
       }
 
-      System.out.println("Message " + (i + 1));
-      System.out.println("From : " + messages[i].getFrom()[0]);
-      System.out.println("Subject : " + messages[i].getSubject());
-      System.out.println("Sent Date : " + messages[i].getSentDate());
-      System.out.println();
-    }
+      //close the store and folder objects
+      emailFolder.close(false);
+      store.close();
 
-    inbox.close(true);
-    store.close();
+      } catch (NoSuchProviderException e) {
+         e.printStackTrace();
+      } catch (MessagingException e) {
+         e.printStackTrace();
+      } catch (Exception e) {
+         e.printStackTrace();
+      }
   }
 }
