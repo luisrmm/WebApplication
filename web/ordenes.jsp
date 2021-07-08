@@ -13,7 +13,7 @@
    e.enviar();
    g.getInbox();
    cone.setConn();
-   List<Producto> arrayProducto = cone.getProductos();
+   //List<Producto> arrayProducto = cone.getProductos();
 %>
 
 <!DOCTYPE html>
