@@ -22,8 +22,18 @@
     e.enviar();
     g.getInbox();
     cone.setConn();
-%>
 
+    List<Producto> arrayProducto = new ArrayList<>();
+    arrayProducto = cone.getProductos();
+    int l = 0;
+    if (arrayProducto == null) {
+        arrayProducto = new ArrayList<>();
+    } else {
+        l = arrayProducto.size();
+    }
+%>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <!DOCTYPE html>
 <html>
     <head>
@@ -71,59 +81,106 @@
                 padding-top: 20px;
             }
 
+            table {
+                font-family: arial, sans-serif;
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            td, th {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+            }
+
+            tr:nth-child(even) {
+                background-color: #dddddd;
+            }
+            body {margin:0;}
+
+            .icon-bar {
+                width: 100%;
+                background-color: #555;
+                overflow: auto;
+            }
+
+            .icon-bar a {
+                float: left;
+                width: 20%;
+                text-align: center;
+                padding: 12px 0;
+                transition: all 0.3s ease;
+                color: white;
+                font-size: 36px;
+            }
+
+            .icon-bar a:hover {
+                background-color: #000;
+            }
+
+            .active {
+                background-color: #04AA6D;
+            }
+
         </style>
     </head>
     <body>
 
+        <div class="icon-bar">
+            <a class="active" href="index.html"><i class="fa fa-home"></i></a> 
+        </div>
+        <form name="f1" method="get" action="#">
+            <select name="clr">
+                <option>Red</option>
+                <option>Blue</option>   
+                <option>Green</option>
+                <option>Pink</option>
+            </select>
+            <input type="submit" name="submit" value="Select Color"/>
+        </form>
+        <%-- To display selected value from dropdown list. --%>
+        <%
+            String s = request.getParameter("clr");
+            if (s != null) {
+                System.out.println("Selected Color is : " + s);
+            }
+        %>
         <h3>ORDEN DE COMPRA</h3>
 
-
-        <form action="action.jsp"> 
-            <select name="productId"> 
-                <option value="1">MyExamCloud</option> 
-                <option value="2">ExamBoat</option> 
-                <option value="3">Test Generator Lab</option> 
-            </select> 
-            <input type="submit" value="Submit"> 
-        </form> 
-
-        // action.jsp 
-        <%
-            String productSelected = request.getParameter("productId");
-        %>
-
         <div class="container">
-            <form action="list" method="get">
+            <form action="list" method="get">.
                 <label for="cant">Cantidad</label>
                 <input type="text" id="cant" placeholder="Ingrese una cantidad..">
 
-                <%  List<Producto> arrayProducto = (List<Producto>) request.getAttribute("arrayProducto");
-                    int l = 0;
-                    if (arrayProducto == null) {
-                        arrayProducto = new ArrayList<>();
-                    } else {
-                        l = arrayProducto.size();
-                    }
-                %>
-
                 <label for="prop">Productos</label>
                 </select>
-                <select name="prop">
+                <select name="prop" id="Produc">
                     <% for (int i = 0; i < arrayProducto.size(); i += 1) {%>
                     <option value="<%=arrayProducto.get(i).getProductoID()%>">
-                        <%=arrayProducto.get(i).getNombre()%>  $<%=arrayProducto.get(i).getPrecioUnitario()%>
+                        <%=arrayProducto.get(i).getNombre()%>  	₡<%=arrayProducto.get(i).getPrecioUnitario()%>
                     </option>
                     <% }%>
                 </select>
+
                 <br/><br/>
-                <input type="submit" value="Submit" />
-
-                <div class="orden" >      
-                    <label for="orden">Su Orden</label>
-                    <textarea id="orden" disabled placeholder="5 Kilos - Tomates -$3 -> $15" style="height:200px"></textarea>
-                </div>
-
-
+                <input type="Submit" value="Submit" />
+                <br/><br/>
+                <label for="orden">Su Orden</label>
+                <table>
+                    <tr>
+                        <th>Producto ID</th>
+                        <th>Nombre</th>
+                        <th>Precio</th>
+                        <th>Cantidad</th>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>Atun</td>
+                        <td>₡700.0</td>
+                        <td>2</td>
+                    </tr>
+                </table>
+                <br/><br/>
                 <label for="ltotal">Total</label>
                 <input type="text" id="ltotal" disabled placeholder="Total..">
 

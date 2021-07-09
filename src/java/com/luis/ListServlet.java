@@ -23,19 +23,26 @@ public class ListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+            arrayProducto(request, response);
+    }
+     private void arrayProducto(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         DB dao = new DB();
         dao.setConn();
         List<Producto> arrayProducto = dao.getProductos();
-        ArrayList <String> databaseArrayList = new ArrayList();
-        databaseArrayList.add("1");
-        databaseArrayList.add("2");
-        databaseArrayList.add("3");
-        request.setAttribute("databaseList", databaseArrayList);   
-         System.out.println("lfglhljlfjlfjghjfdhkjhgfdhgfkdh");
-         System.out.println(arrayProducto.size()); 
         request.setAttribute("arrayProducto", arrayProducto);
-        request.setAttribute("id", "1234");
         RequestDispatcher dispatcher = request.getRequestDispatcher("newjsp.jsp");
         dispatcher.forward(request, response);
     }
+    
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        int productoID = Integer.parseInt(request.getParameter("Produc"));
+ 
+        request.setAttribute("selectedProdId", productoID);
+ 
+        arrayProducto(request, response);
+    }
 }
+

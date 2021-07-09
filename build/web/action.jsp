@@ -4,6 +4,10 @@
     Author     : luisr
 --%>
 
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
+<%@page import="com.luis.Producto"%>
+<%@page import="com.luis.DB"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -12,49 +16,58 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <script type="text/javascript">
-            function runConfiguration(actionName) {
-                console.log("runConfiguration")
+
+
+
+        <%!
+            List<Producto> arrayProducto = new ArrayList<>();
+
+            public int runConfiguration() {
+                System.out.println("runConfiguration");
+
+                DB cone = new DB();
+                cone.setConn();
+                arrayProducto = cone.getProductos();
+                int l = 0;
+                if (arrayProducto == null) {
+                    arrayProducto = new ArrayList<>();
+                } else {
+                    l = arrayProducto.size();
+                }
+                return l;
             }
-            function editConfiguration(actionName) {
-                console.log("editConfiguration")
+
+            int a = runConfiguration();
+        %>
+
+        <%!
+            public int sum(int a, int b) {
+                System.out.println(a);
+                System.out.println(b);
+                return a + b;
             }
-            function deleteConfiguration(actionName) {
-                console.log("deleteConfiguration")
-            }
-
-            function gotopage(actionname) {
-                console.log("gotopage")
-
-            }
-        </script>
+        %>
+        2 + 2 = <%= sum(2, 2)%>
 
 
-        <button type="button" onclick="runConfiguration()">Run</button>  
-        <button type="button" onclick="editConfiguration()">Edit</button>
-        <button type = "button" onclick = "deleteConfiguration()">Delete</button>
 
-        <a href="<%=request.getContextPath()%>/action.jsp?action=runConfig">RUN</a>
+        <button type="button" onclick=" <% sum(5, 6);%>">Run</button>
+        <button type="button" onClick=" <%= sum(5, 6)%>">Run</button>  
 
-        <a href="<%=request.getContextPath()%>/action.jsp?action=editConfig">EDIT</a>
 
         <h1>Hello World!</h1>
 
-        <form action="action.jsp"> 
-            <select name="productId"> 
-                <option value="1">MyExamCloud</option> 
-                <option value="2">ExamBoat</option> 
-                <option value="3">Test Generator Lab</option> 
-            </select> 
-            <input type="submit" value="Submit"> 
-            <input type="button" value="Create" onclick="location.href = '@Url.Action("Create", "User")'" />
-
-        </form> 
-
-        <%
-            String productSelected = request.getParameter("productId");
-        %>
-
-        <h1><%= productSelected%></h1>
+        <select name="prop" id="Produc">
+            <% for (int i = 0;
+                        i < arrayProducto.size();
+                        i += 1) {%>
+            <option value="<%=arrayProducto.get(i).getProductoID()%>">
+                <%=arrayProducto.get(i).getNombre()%>  	₡<%=arrayProducto.get(i).getPrecioUnitario()%>
+            </option>
+            <c:if test="${arrayProducto.get(i).getProductoID() eq selectedProdId}">selected="selected"</c:if>
+            >
+            ${arrayProducto.get(i).getNombre()}
+            <% }%>
+        </select>
     </body>
 </html>
