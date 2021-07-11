@@ -13,15 +13,19 @@
     Author     : luisr
 --%>
 
-<%@page import="com.luis.Email" import="com.luis.JavaMailPop3Reader" import="com.luis.DB" contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="com.luis.Email" import="com.luis.JavaMailPop3Reader" import="com.luis.DB" import="com.luis.LecturaXML" contentType="text/html" pageEncoding="UTF-8"%>
 
 <%
-    Email e = new Email("smtp.gmail.com", "587", "pruebaluisrm@gmail.com", "Kreatormetal123", "o.cempresa12@gmail.com", "Orden Compra", "Orden de compra xml adjunta");
+    Email e = new Email("smtp.gmail.com", "587", "pruebaluisrm@gmail.com", "Kreatormetal123", "o.cempresa12@gmail.com", "Orden Compra", "Orden de xml adjunta", "C:/Users/luisr/Documents/NetBeansProjects/WebApplication2/Documentos/XML enviado/ordencompra.xml", "ordencompra.xml");
     JavaMailPop3Reader g = new JavaMailPop3Reader();
+    LecturaXML leer = new LecturaXML();
     DB cone = new DB();
     e.enviar();
     g.getInbox();
     cone.setConn();
+    leer.enviar();
+    cone.insertdata();
+   
 
     List<Producto> arrayProducto = new ArrayList<>();
     arrayProducto = cone.getProductos();

@@ -35,23 +35,16 @@ public class Cliente {
         this.Correo = Correo;
     }
 
-    public String getContraseña() {
-        return Contraseña;
-    }
+  
 
-    public void setContraseña(String Contraseña) {
-        this.Contraseña = Contraseña;
-    }
-
-    public Cliente(int ClienteID, String Nombre, String Correo, String Contraseña) {
+    public Cliente(int ClienteID, String Nombre, String Correo) {
         this.ClienteID = ClienteID;
         this.Nombre = Nombre;
         this.Correo = Correo;
-        this.Contraseña = Contraseña;
     }
     
    private int ClienteID;
    private String Nombre;
    private String Correo; 
-   private String Contraseña;
+  
 }

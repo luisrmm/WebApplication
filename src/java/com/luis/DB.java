@@ -7,10 +7,12 @@ package com.luis;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import static java.util.Collections.list;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -49,8 +51,8 @@ public class DB {
 
     // Clave de usuario
     private final String password;
-    
-     public Connection getConn() {
+
+    public Connection getConn() {
         return conn;
     }
 
@@ -62,20 +64,16 @@ public class DB {
             System.out.println(e);
         }
     }
-    
-    public int suma(int a, int b){
-        return a+b;
-    }
 
     public List<Producto> getProductos() {
 
-         List<Producto> arrayProducto = new ArrayList<>();
-        
+        List<Producto> arrayProducto = new ArrayList<>();
+
         try {
             // Instancias la clase que hemos creado anteriormente
             //DB SQL = new DB();
             // Llamas al método que tiene la clase y te devuelve una conexión
-           
+
             // Query que usarás para hacer lo que necesites
             String query = "Select * FROM producto";
             // PreparedStatement
@@ -85,15 +83,13 @@ public class DB {
 
             // execute the query, and get a java resultset
             ResultSet rs = stmt.executeQuery(query);
-            
-           
+
             // iterate through the java resultset
             while (rs.next()) {
                 int ProductoID = rs.getInt("ProductoID");
                 String Nombre = rs.getString("Nombre");
                 double PrecioUnitario = rs.getDouble("PrecioUnitario");
                 // print the results
-                System.out.format("%s, %s, %s\n", ProductoID, Nombre, PrecioUnitario);
                 Producto p = new Producto(ProductoID, Nombre, PrecioUnitario);
                 arrayProducto.add(p);
             }
@@ -102,8 +98,53 @@ public class DB {
         } catch (SQLException ex) {
             Logger.getLogger(DB.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println("Print in get producto"); 
-        System.out.println(arrayProducto.size()); 
         return arrayProducto;
+    }
+
+    public void insertdata() {
+        LecturaXML x = new LecturaXML();
+        ArrayList<Productosxml> arrayProd = new ArrayList<>();
+        ArrayList<Cliente> arrayClient = new ArrayList<>();
+        ArrayList<OCXML> arrayOrden = new ArrayList<>();
+
+        try {
+            List arrayOC = x.enviar();
+            arrayProd.add((Productosxml) arrayOC.get(0));
+            arrayProd.add((Productosxml) arrayOC.get(1));
+            arrayProd.add((Productosxml) arrayOC.get(2));
+            arrayProd.add((Productosxml) arrayOC.get(3));
+            arrayClient.add((Cliente) arrayOC.get(4));
+            arrayOrden.add((OCXML) arrayOC.get(5));
+
+            int ClienteID  = arrayClient.get(0).getClienteID();
+            String Nombre = arrayClient.get(0).getNombre();
+            String Correo = arrayClient.get(0).getCorreo();
+         
+
+            String insertTableSQL = "INSERT INTO cliente"
+                    + "(ClienteID, Nombre, Correo) VALUES"
+                    + "(?,?,?)";
+
+            PreparedStatement stmt = this.getConn().prepareStatement(insertTableSQL);
+            stmt.setInt(1, ClienteID);
+            stmt.setString(2, Nombre);
+            stmt.setString(3, Correo);
+   
+
+            int retorno = stmt.executeUpdate();
+            if (retorno > 0) {
+                System.out.println("Insertado correctamente");
+            }
+
+        } catch (SQLException sqle) {
+            System.out.println("SQLState: "
+                    + sqle.getSQLState());
+            System.out.println("SQLErrorCode: "
+                    + sqle.getErrorCode());
+            sqle.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }

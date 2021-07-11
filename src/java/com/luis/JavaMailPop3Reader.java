@@ -33,7 +33,7 @@ public class JavaMailPop3Reader {
             String port = "995";
             String user = "o.cempresa12@gmail.com";
             String password = "empresa123";
-            String saveDirectory = "C:\\Users\\luisr\\Documents\\NetBeansProjects\\WebApplication2\\Documentos";
+            String saveDirectory = "C:/Users\\luisr\\Documents\\NetBeansProjects\\WebApplication2\\Documentos\\XML recibido";
 
             //create properties field
             Properties properties = new Properties();
