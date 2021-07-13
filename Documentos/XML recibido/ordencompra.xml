@@ -1,38 +1,28 @@
 <?xml version="1.0"?>
 <factura>
-    <cliente>
+    <general>
     	<cedula>305120442</cedula>
     	<autor>Luis</autor>
     	<email>luisrm5142@gmail.com</email>
-    	<descuento>0</descuento>
-    	<impuesto>0.13</impuesto>
-    	<subtotal>8020</subtotal>
-    	<total>9062.6</total>
     	<fecha>12/05/2021</fecha>
-    </cliente>
+    </general>
     <productos>
         <producto>
-            <id>6</id>
-            <nombre>Atun</nombre>
+            <id>1</id>
+            <nombre>Licor</nombre>
             <cantidad>5</cantidad>
-            <precio>700</precio>
+            <precio>1100</precio>
         </producto>
         <producto>
-            <id>9</id>
-            <nombre>Arroz</nombre>
-            <cantidad>2</cantidad>
-            <precio>1200</precio>
+            <id>2</id>
+            <nombre>Cerveza</nombre>
+            <cantidad>6</cantidad>
+            <precio>1000</precio>
         </producto>
         <producto>
-            <id>8</id>
-            <nombre>Frijoles</nombre>
+            <id>3</id>
+            <nombre>Jugo de naranja</nombre>
             <cantidad>1</cantidad>
-            <precio>620</precio>
-        </producto>
-        <producto>
-            <id>11</id>
-            <nombre>Fideos</nombre>
-            <cantidad>3</cantidad>
             <precio>500</precio>
         </producto>
     </productos>

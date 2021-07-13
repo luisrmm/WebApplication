@@ -62,7 +62,7 @@
                         i < arrayProducto.size();
                         i += 1) {%>
             <option value="<%=arrayProducto.get(i).getProductoID()%>">
-                <%=arrayProducto.get(i).getNombre()%>  	₡<%=arrayProducto.get(i).getPrecioUnitario()%>
+                <%=arrayProducto.get(i).getNombre()%>  	₡<%=arrayProducto.get(i).getPrecio()%>
             </option>
             <c:if test="${arrayProducto.get(i).getProductoID() eq selectedProdId}">selected="selected"</c:if>
             >

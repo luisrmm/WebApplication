@@ -11,6 +11,13 @@ package com.luis;
  */
 public class Producto {
 
+    public Producto(int ProductoID, String Nombre, int Precio, int Cantidad) {
+        this.ProductoID = ProductoID;
+        this.Nombre = Nombre;
+        this.Precio = Precio;
+        this.Cantidad = Cantidad;
+    }
+
     public int getProductoID() {
         return ProductoID;
     }
@@ -27,22 +34,25 @@ public class Producto {
         this.Nombre = Nombre;
     }
 
-    public double getPrecioUnitario() {
-        return PrecioUnitario;
+    public int getPrecio() {
+        return Precio;
     }
 
-    public void setPrecioUnitario(double PrecioUnitario) {
-        this.PrecioUnitario = PrecioUnitario;
+    public void setPrecio(int Precio) {
+        this.Precio = Precio;
     }
 
-    public Producto(int ProductoID, String Nombre, double PrecioUnitario) {
-        this.ProductoID = ProductoID;
-        this.Nombre = Nombre;
-        this.PrecioUnitario = PrecioUnitario;
+    public int getCantidad() {
+        return Cantidad;
+    }
+
+    public void setCantidad(int Cantidad) {
+        this.Cantidad = Cantidad;
     }
     
     private int ProductoID;
     private String Nombre;
-    private double PrecioUnitario;
+    private int Precio;
+    private int Cantidad;
     
 }

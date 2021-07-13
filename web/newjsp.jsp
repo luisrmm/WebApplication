@@ -161,7 +161,7 @@
                 <select name="prop" id="Produc">
                     <% for (int i = 0; i < arrayProducto.size(); i += 1) {%>
                     <option value="<%=arrayProducto.get(i).getProductoID()%>">
-                        <%=arrayProducto.get(i).getNombre()%>  	₡<%=arrayProducto.get(i).getPrecioUnitario()%>
+                        <%=arrayProducto.get(i).getNombre()%>  	₡<%=arrayProducto.get(i).getPrecio()%>
                     </option>
                     <% }%>
                 </select>

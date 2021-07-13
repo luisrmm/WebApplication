@@ -12,7 +12,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import static java.util.Collections.list;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,11 +22,11 @@ public class DB {
         this.conn = null;
         this.port = "3306";
         this.username = "root";
-        this.database = "ocweb";
         this.password = "admin";
         this.hostname = "localhost";
+        this.database = "facturaweb";
         this.driver = "com.mysql.jdbc.Driver";
-        this.url = "jdbc:mysql://localhost:3306/ocweb?allowPublicKeyRetrieval=true&useSSL=false";
+        this.url = "jdbc:mysql://localhost:3306/facturaweb?allowPublicKeyRetrieval=true&useSSL=false";
     }
 
     private Connection conn;
@@ -88,9 +87,9 @@ public class DB {
             while (rs.next()) {
                 int ProductoID = rs.getInt("ProductoID");
                 String Nombre = rs.getString("Nombre");
-                double PrecioUnitario = rs.getDouble("PrecioUnitario");
+                int Precio = rs.getInt("Precio");
                 // print the results
-                Producto p = new Producto(ProductoID, Nombre, PrecioUnitario);
+                Producto p = new Producto(ProductoID, Nombre, Precio, 0);
                 arrayProducto.add(p);
             }
             this.getConn().close();
@@ -103,37 +102,58 @@ public class DB {
 
     public void insertdata() {
         LecturaXML x = new LecturaXML();
-        ArrayList<Productosxml> arrayProd = new ArrayList<>();
+        ArrayList<Producto> arrayProd = new ArrayList<>();
         ArrayList<Cliente> arrayClient = new ArrayList<>();
-        ArrayList<OCXML> arrayOrden = new ArrayList<>();
 
         try {
-            List arrayOC = x.enviar();
-            arrayProd.add((Productosxml) arrayOC.get(0));
-            arrayProd.add((Productosxml) arrayOC.get(1));
-            arrayProd.add((Productosxml) arrayOC.get(2));
-            arrayProd.add((Productosxml) arrayOC.get(3));
-            arrayClient.add((Cliente) arrayOC.get(4));
-            arrayOrden.add((OCXML) arrayOC.get(5));
+            Factura factura_xml = x.enviar(); // Retorna la informacion de la factura..
 
-            int ClienteID  = arrayClient.get(0).getClienteID();
-            String Nombre = arrayClient.get(0).getNombre();
-            String Correo = arrayClient.get(0).getCorreo();
-         
+            int ClienteID = factura_xml.getClienteID();
+            String Fecha = factura_xml.getFecha();
 
-            String insertTableSQL = "INSERT INTO cliente"
-                    + "(ClienteID, Nombre, Correo) VALUES"
-                    + "(?,?,?)";
+            System.out.println(">>>>>>> Fecha" + Fecha + "<>" + Fecha.length());
 
-            PreparedStatement stmt = this.getConn().prepareStatement(insertTableSQL);
+            String insertTableSQL = "INSERT INTO ordencompra"
+                    + "(ClienteID, Fecha) VALUES"
+                    + "(?, ? )";
+
+            PreparedStatement stmt = this.getConn().prepareStatement(insertTableSQL, Statement.RETURN_GENERATED_KEYS);
             stmt.setInt(1, ClienteID);
-            stmt.setString(2, Nombre);
-            stmt.setString(3, Correo);
-   
+            stmt.setString(2, Fecha);
 
             int retorno = stmt.executeUpdate();
             if (retorno > 0) {
                 System.out.println("Insertado correctamente");
+
+                ResultSet rs = stmt.getGeneratedKeys();
+                int generatedKey = 0;
+                if (rs.next()) {
+                    generatedKey = rs.getInt(1);
+                    String insertTableSQL2 = "INSERT INTO productoorden"
+                            + "(OrdenID, ProductoID, Cantidad, Precio) VALUES ";
+
+                    for (Producto p : factura_xml.getProductos()) {
+                        insertTableSQL2 += "(" + generatedKey + ", " + p.getProductoID() + ", " + p.getCantidad() + ", " + p.getPrecio() + "), ";
+                    }
+                    insertTableSQL2 = insertTableSQL2.substring(0, insertTableSQL2.length() - 2);
+                    System.out.println("insertTableSQL2 > " + insertTableSQL2);
+
+                    PreparedStatement stmt2 = this.getConn().prepareStatement(insertTableSQL2);
+
+                    int retorno2 = stmt2.executeUpdate();
+                    if (retorno2 > 0) {
+                        System.out.println("EXITO : ");
+                    } else {
+                        System.out.println("ERROR : ");
+                    }
+                }
+
+                System.out.println("insertTableSQL : ");
+                System.out.println(insertTableSQL);
+
+                // TODO Crear nuevo query para ProductoOrden
+            } else {
+                System.out.println("Formato de XML incorrecto...!");
             }
 
         } catch (SQLException sqle) {
