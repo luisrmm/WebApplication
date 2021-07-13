@@ -16,17 +16,21 @@
 <%@page import="com.luis.Email" import="com.luis.JavaMailPop3Reader" import="com.luis.DB" import="com.luis.LecturaXML" contentType="text/html" pageEncoding="UTF-8"%>
 
 <%
-    Email e = new Email("smtp.gmail.com", "587", "pruebaluisrm@gmail.com", "Kreatormetal123", "o.cempresa12@gmail.com", "Orden Compra", "Orden de xml adjunta", "C:/Users/luisr/Documents/NetBeansProjects/WebApplication2/Documentos/XML enviado/ordencompra.xml", "ordencompra.xml");
     JavaMailPop3Reader g = new JavaMailPop3Reader();
-    LecturaXML leer = new LecturaXML();
+    g.getInbox(); // Escucha los correos entrastes
+    
+    Email e = new Email("smtp.gmail.com", "587", "pruebaluisrm@gmail.com", "Kreatormetal123", "o.cempresa12@gmail.com", "Orden Compra", "Orden de xml adjunta", "C:/Users/luisr/Documents/NetBeansProjects/WebApplication2/Documentos/XML enviado/ordencompra.xml", "ordencompra.xml");
+    
+    // TODO: Esta accion se debe envocar/llmar al darle Enviar Orden/Factura por parte del usuario, NO aqui. ------ doPost en algun Sevlet (usando action)
+    e.enviar(); // Envia el correo a la 'empresa'
+    
     DB cone = new DB();
-    e.enviar();
-    g.getInbox();
     cone.setConn();
-    leer.enviar();
-    cone.insertdata();
+    
+//    LecturaXML leer = new LecturaXML();
+//    leer.prepararXMLaDB();
+    cone.insertdata(); // Inserta lo que .prepararXMLaDB genero
    
-
     List<Producto> arrayProducto = new ArrayList<>();
     arrayProducto = cone.getProductos();
     int l = 0;
@@ -35,6 +39,8 @@
     } else {
         l = arrayProducto.size();
     }
+    
+   // Cerrar Base de Datos, si o la uso mas
 %>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">

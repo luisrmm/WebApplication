@@ -106,54 +106,57 @@ public class DB {
         ArrayList<Cliente> arrayClient = new ArrayList<>();
 
         try {
-            Factura factura_xml = x.enviar(); // Retorna la informacion de la factura..
+            Factura factura_xml = x.prepararXMLaDB(); // Retorna la informacion de la factura..
 
-            int ClienteID = factura_xml.getClienteID();
-            String Fecha = factura_xml.getFecha();
+            if (factura_xml != null) {
+                int ClienteID = factura_xml.getClienteID();
+                String Fecha = factura_xml.getFecha();
 
-            System.out.println(">>>>>>> Fecha" + Fecha + "<>" + Fecha.length());
+                System.out.println(">>>>>>> Fecha" + Fecha + "<>" + Fecha.length());
 
-            String insertTableSQL = "INSERT INTO ordencompra"
-                    + "(ClienteID, Fecha) VALUES"
-                    + "(?, ? )";
+                String insertTableSQL = "INSERT INTO ordencompra"
+                        + "(ClienteID, Fecha) VALUES"
+                        + "(?, ? )";
 
-            PreparedStatement stmt = this.getConn().prepareStatement(insertTableSQL, Statement.RETURN_GENERATED_KEYS);
-            stmt.setInt(1, ClienteID);
-            stmt.setString(2, Fecha);
+                PreparedStatement stmt = this.getConn().prepareStatement(insertTableSQL, Statement.RETURN_GENERATED_KEYS);
+                stmt.setInt(1, ClienteID);
+                stmt.setString(2, Fecha);
 
-            int retorno = stmt.executeUpdate();
-            if (retorno > 0) {
-                System.out.println("Insertado correctamente");
+                int retorno = stmt.executeUpdate();
+                if (retorno > 0) {
+                    System.out.println("Insertado correctamente");
 
-                ResultSet rs = stmt.getGeneratedKeys();
-                int generatedKey = 0;
-                if (rs.next()) {
-                    generatedKey = rs.getInt(1);
-                    String insertTableSQL2 = "INSERT INTO productoorden"
-                            + "(OrdenID, ProductoID, Cantidad, Precio) VALUES ";
+                    ResultSet rs = stmt.getGeneratedKeys();
+                    int generatedKey = 0;
+                    if (rs.next()) {
+                        generatedKey = rs.getInt(1);
+                        String insertTableSQL2 = "INSERT INTO productoorden"
+                                + "(OrdenID, ProductoID, Cantidad, Precio) VALUES ";
 
-                    for (Producto p : factura_xml.getProductos()) {
-                        insertTableSQL2 += "(" + generatedKey + ", " + p.getProductoID() + ", " + p.getCantidad() + ", " + p.getPrecio() + "), ";
+                        for (Producto p : factura_xml.getProductos()) {
+                            insertTableSQL2 += "(" + generatedKey + ", " + p.getProductoID() + ", " + p.getCantidad() + ", " + p.getPrecio() + "), ";
+                        }
+                        insertTableSQL2 = insertTableSQL2.substring(0, insertTableSQL2.length() - 2);
+                        System.out.println("insertTableSQL2 > " + insertTableSQL2);
+
+                        PreparedStatement stmt2 = this.getConn().prepareStatement(insertTableSQL2);
+
+                        int retorno2 = stmt2.executeUpdate();
+                        if (retorno2 > 0) {
+                            System.out.println("EXITO : ");
+                        } else {
+                            System.out.println("ERROR : ");
+                        }
                     }
-                    insertTableSQL2 = insertTableSQL2.substring(0, insertTableSQL2.length() - 2);
-                    System.out.println("insertTableSQL2 > " + insertTableSQL2);
 
-                    PreparedStatement stmt2 = this.getConn().prepareStatement(insertTableSQL2);
-
-                    int retorno2 = stmt2.executeUpdate();
-                    if (retorno2 > 0) {
-                        System.out.println("EXITO : ");
-                    } else {
-                        System.out.println("ERROR : ");
-                    }
+                    System.out.println("insertTableSQL : ");
+                    System.out.println(insertTableSQL);
+                    
+                    Thread.sleep(5000);
+                    // TODO Crear nuevo query para ProductoOrden
+                } else {
+                    System.out.println("Formato de XML incorrecto...!");
                 }
-
-                System.out.println("insertTableSQL : ");
-                System.out.println(insertTableSQL);
-
-                // TODO Crear nuevo query para ProductoOrden
-            } else {
-                System.out.println("Formato de XML incorrecto...!");
             }
 
         } catch (SQLException sqle) {
