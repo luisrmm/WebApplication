@@ -55,7 +55,7 @@ public class Email {
             Properties props = new Properties();
             props.setProperty("mail.smtp.host", host);
             props.setProperty("mail.smtp.starttls.enable", "true");
-            props.setProperty("mail.smtp.port", "587");
+            props.setProperty("mail.smtp.port", port);
             props.setProperty("mail.smtp.auth", "true");
 
             Session session = Session.getDefaultInstance(props);

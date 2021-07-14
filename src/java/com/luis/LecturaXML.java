@@ -98,6 +98,8 @@ public class LecturaXML {
         } catch (IOException e) {
             System.out.println(e);
         }
+        
+        System.out.println("antes de retornar null");
         return null;
     }
 

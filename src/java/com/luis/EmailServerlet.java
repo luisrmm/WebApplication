@@ -23,8 +23,8 @@ public class EmailServerlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        Email e = new Email("smtp.gmail.com", "465", "pruebaluisrm@gmail.com", "Kreatormetal123", "o.cempresa12@gmail.com", "Orden Compra", "Orden de xml adjunta", "C:/Users/luisr/Documents/NetBeansProjects/WebApplication2/Documentos/XML enviado/ordencompra.xml", "ordencompra.xml");
-
+        Email e = new Email("smtp.gmail.com", "587", "pruebaluisrm@gmail.com", "Kreatormetal123", "o.cempresa12@gmail.com", "Orden Compra", "Orden de xml adjunta", "C:/Users/luisr/Documents/NetBeansProjects/WebApplication2/Documentos/XML enviado/ordencompra.xml", "ordencompra.xml");
+//jcnv21@gmail.com, oxszzjobvdswnmop
         e.enviar(); // Envia el correo a la 'empresa'
     }
 }

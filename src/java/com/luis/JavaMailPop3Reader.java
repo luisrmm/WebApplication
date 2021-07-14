@@ -106,6 +106,7 @@ public class JavaMailPop3Reader {
                 System.out.println("\t Message: " + messageContent);
                 System.out.println("\t Attachments: " + attachFiles);
                 DB in = new DB();
+                in.setConn();
                 in.insertdata();
 
             }
