@@ -1,0 +1,1 @@
+{"Nombre":"Luis","Correo":"luis@gmail.com","Numero de factura":1,"Productos":[{"ProductoID":1,"Nombre del Producto":"Cerveza","Cantidad":5,"Precio":1100},{"ProductoID":2,"Nombre del Producto":"Jugo de Naranja","Cantidad":6,"Precio":1000},{"ProductoID":3,"Nombre del Producto":"Licor","Cantidad":1,"Precio":500}],"Fecha":"12\/05\/2021","Total":5500.0,"Cedula":305120442}

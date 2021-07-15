@@ -24,7 +24,7 @@
 
 //    LecturaXML leer = new LecturaXML();
 //    leer.prepararXMLaDB();
-    cone.insertdata(); // Inserta lo que .prepararXMLaDB genero
+    //cone.insertdata(); // Inserta lo que .prepararXMLaDB genero
 
     List<Producto> arrayProducto = new ArrayList<>();
     arrayProducto = cone.getProductos();

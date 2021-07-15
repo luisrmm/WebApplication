@@ -8,16 +8,11 @@
             <file>file:/C:/Users/luisr/Documents/NetBeansProjects/WebApplication2/src/java/com/luis/ListServlet.java</file>
             <file>file:/C:/Users/luisr/Documents/NetBeansProjects/WebApplication2/src/java/com/luis/Factura.java</file>
             <file>file:/C:/Users/luisr/Documents/NetBeansProjects/WebApplication2/src/java/com/luis/LecturaXML.java</file>
-            <file>file:/C:/Users/luisr/Documents/NetBeansProjects/WebApplication2/src/java/com/luis/ProductoOrden.java</file>
-            <file>file:/C:/Users/luisr/Documents/NetBeansProjects/WebApplication2/src/java/com/luis/Cliente.java</file>
+            <file>file:/C:/Users/luisr/Documents/NetBeansProjects/WebApplication2/src/java/com/luis/EmailServerlet.java</file>
+            <file>file:/C:/Users/luisr/Documents/NetBeansProjects/WebApplication2/src/java/com/luis/Json.java</file>
+            <file>file:/C:/Users/luisr/Documents/NetBeansProjects/WebApplication2/src/java/com/luis/FacturaJson.java</file>
             <file>file:/C:/Users/luisr/Documents/NetBeansProjects/WebApplication2/src/java/com/luis/DB.java</file>
             <file>file:/C:/Users/luisr/Documents/NetBeansProjects/WebApplication2/web/newjsp.jsp</file>
-            <file>file:/C:/Users/luisr/Documents/NetBeansProjects/WebApplication2/web/index.html</file>
-            <file>file:/C:/Users/luisr/Documents/NetBeansProjects/WebApplication2/src/java/com/luis/StudentServlet.java</file>
-            <file>file:/C:/Users/luisr/Documents/NetBeansProjects/WebApplication2/nbproject/build-impl.xml</file>
-            <file>file:/C:/Users/luisr/Documents/NetBeansProjects/WebApplication2/src/java/com/luis/EmailServerlet.java</file>
-            <file>file:/C:/Users/luisr/Documents/NetBeansProjects/WebApplication2/web/action.jsp</file>
-            <file>file:/C:/Users/luisr/Documents/NetBeansProjects/WebApplication2/web/student.jsp</file>
         </group>
     </open-files>
 </project-private>

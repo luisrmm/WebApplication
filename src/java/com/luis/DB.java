@@ -5,6 +5,8 @@
  */
 package com.luis;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -12,9 +14,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.json.simple.JSONObject;
 
 public class DB {
 
@@ -86,7 +90,7 @@ public class DB {
             // iterate through the java resultset
             while (rs.next()) {
                 int ProductoID = rs.getInt("ProductoID");
-                String Nombre = rs.getString("Nombre");
+                String Nombre = rs.getString("NombrePro");
                 int Precio = rs.getInt("Precio");
                 // print the results
                 Producto p = new Producto(ProductoID, Nombre, Precio, 0);
@@ -151,7 +155,7 @@ public class DB {
 
                     System.out.println("insertTableSQL : ");
                     System.out.println(insertTableSQL);
-                    
+
                     Thread.sleep(5000);
                     // TODO Crear nuevo query para ProductoOrden
                 } else {
@@ -170,4 +174,84 @@ public class DB {
         }
 
     }
+
+    public void getData() throws SQLException, IOException {
+        List arrayFactura = new ArrayList<>();
+        int cedula = 305120442;
+        int Total = 0;
+        String query = "SELECT  ordencompra.OrdenID, ordencompra.ClienteID,cliente.Nombre,cliente.Correo, ordencompra.Fecha, productoorden.ProductoID,producto.NombrePro,  productoorden.Cantidad,  productoorden.Precio\n"
+                + "FROM ordencompra\n"
+                + "INNER JOIN productoorden ON ordencompra.OrdenID = productoorden.OrdenID\n"
+                + "INNER JOIN cliente ON cliente.ClienteID = ordencompra.ClienteID\n"
+                + "INNER JOIN producto ON producto.ProductoID = productoorden.ProductoID\n"
+                + "WHERE cliente.ClienteID = " + cedula;
+        // PreparedStatement
+        try {
+            // create the java statement
+            Statement stmt = this.getConn().createStatement();
+
+            // execute the query, and get a java resultset
+            ResultSet rs = stmt.executeQuery(query);
+
+            // iterate through the java resultset
+            while (rs.next()) {
+                int NumFac = rs.getInt("OrdenID");
+                int clienteID = rs.getInt("ClienteID");
+                String Nombre = rs.getString("Nombre");
+                String Correo = rs.getString("Correo");
+                String Fecha = rs.getString("Fecha");
+                int ProductoID = rs.getInt("ProductoID");
+                String NombrePro = rs.getString("NombrePro");
+                int Cantidad = rs.getInt("Cantidad");
+                int Precio = rs.getInt("Precio");
+                int subtotal = Cantidad * Precio;
+                Total += subtotal;
+                // print the results
+                FacturaJson f = new FacturaJson(NumFac, clienteID, Nombre, Correo, Fecha, ProductoID, NombrePro, Cantidad, Precio, Total);
+
+                arrayFactura.add(f);
+            }
+            this.getConn().close();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //return arrayFactura;
+        List<FacturaJson> Fac = arrayFactura;
+        List<JSONObject> Productos = new ArrayList<>();
+        if (cedula == Fac.get(0).getClienteID()) {
+            JSONObject myObject = new JSONObject();
+            myObject.put("Numero de factura", Fac.get(0).getNumFac());
+            myObject.put("Cedula", Fac.get(0).getClienteID());
+            myObject.put("Nombre", Fac.get(0).getNombre());
+            myObject.put("Correo", Fac.get(0).getCorreo());
+            myObject.put("Fecha", Fac.get(0).getFecha());
+            for (int i = 0; i < arrayFactura.size(); i++) {
+                JSONObject subdata = new JSONObject();
+                subdata.put("ProductoID", Fac.get(i).getProductoID());
+                subdata.put("Nombre del Producto", Fac.get(i).getNombrePro());
+                subdata.put("Cantidad", Fac.get(i).getCantidad());
+                subdata.put("Precio", Fac.get(i).getPrecio());
+                Productos.add(subdata);
+            }
+            myObject.put("Productos", Productos);
+            myObject.put("Total",Fac.get(0).getTotal());
+            try {
+
+                FileWriter file = new FileWriter("C:\\Users\\luisr\\Documents\\NetBeansProjects\\WebApplication2\\Documentos\\Factura\\factura.json");
+                file.write(myObject.toJSONString());
+                file.flush();
+                file.close();
+
+            } catch (IOException e) {
+                //manejar error
+            }
+            System.out.println(myObject);
+            Email e = new Email("smtp.gmail.com", "587", "o.cempresa12@gmail.com", "empresa123", "luisrm5142@gmail.com", "Orden Compra", "Factura json adjunta.", "C:/Users/luisr/Documents/NetBeansProjects/WebApplication2/Documentos/Factura/factura.json", "factura.json");
+            e.enviar();
+        }
+        //System.out.println("Error la cedula no existe");
+
+    }
+
 }
